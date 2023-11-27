@@ -99,9 +99,22 @@ int main(void)
 
 
 ISR(TIMER0_COMP_vect)
-{
+
 	mode2_num_count();
 }
+
+ISR(TIMER1_COMPA_vect)
+{
+	
+	//mode1	
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	
+	//mode4
+}
+
 
 void move_arrow(uint8_t direct){
 	
