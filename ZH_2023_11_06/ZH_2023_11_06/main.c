@@ -71,7 +71,6 @@ int main(void)
 	matrix_init();
 	lcd_init();
 	button_init();
-
     while (1) 
     {
 		uint8_t but_var = button_get();
@@ -99,21 +98,19 @@ int main(void)
 
 
 ISR(TIMER0_COMP_vect)
-
-	mode2_num_count();
+{
+	//mode2_num_count();
+	mode4_lcd_timer();
+	mode4_lcd_time_counter();
+	
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	
-	//mode1	
+	mode1_led_run(led_states,led_states_len);
 }
 
-ISR(TIMER1_COMPA_vect)
-{
-	
-	//mode4
-}
+
 
 
 void move_arrow(uint8_t direct){
@@ -191,9 +188,10 @@ void mode2_num_count(){
 	else
 	timer_counter++;
 }
-void mode2_start_num_count(){
+/*void mode2_start_num_count()
+{
 	timer1_CTCmode_init(128, 25000);
-}
+}*/
 void mode4_lcd_timer()
 {
 	char buf[4];
@@ -276,7 +274,7 @@ void mode2_start()
 	lcd_cur_posi(LCD_ROW_1,1);
 	lcd_write_string("             ");
 	mode_2_is_first_run=1;
-	timer0_CTCmode_init(128,125);//2ms
+	//timer0_CTCmode_init(128,125);//2ms
 
 }
 
@@ -290,26 +288,25 @@ void mode2_stop()
 
 void mode1_start()
 {
-	
 	lcd_cur_posi(LCD_ROW_1,1);
-	lcd_write_string("             ");
-	mode_2_is_first_run=1;
-	timer0_CTCmode_init(128,125);
-	mode1_led_run(led_states,1);
+	lcd_write_string(" LED      ");
+	timer1_CTCmode_init(256,31249);
 }
 
 void mode1_stop()
 {
-	timer0_CTCmode_init(0,0);
+	timer1_CTCmode_init(0,0);
+	led_out(0x00);
 	lcd_cur_posi(LCD_ROW_1,1);
 	lcd_write_string("STOP      ");
 	
 }	
 void mode4_start()	
 {
-	mode4_lcd_timer();
-	mode4_lcd_time_counter();
-	_delay_ms(1000);
+	
+	lcd_cur_posi(LCD_ROW_1,1);
+	lcd_write_string(" CLOCK  ");
+	timer0_CTCmode_init(128,125);
 }
 void mode4_stop()
 {

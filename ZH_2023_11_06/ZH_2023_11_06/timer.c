@@ -88,8 +88,7 @@ void timer1_CTCmode_init(int prescaler_num_input, int top_val)
 	(pres_timer1_2_3[i].CSn0_val<<CS10)|
 	(1<<WGM12);
 	
-	TCNT1=0;
-	TIMSK=(1<<OCIE1A); //• Bit 1 – OCIE0 TimerCounter0 Output Compare Match Interrupt Enable
+	TIMSK=(1<<TOIE0); 
 	OCR1A=top_val;
 	sei();
 }
